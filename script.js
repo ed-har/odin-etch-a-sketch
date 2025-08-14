@@ -27,6 +27,11 @@ function setDimension(squareNum, grid) {
 function addColorOnHover(grid) {
     for (const element of grid) {
         element.addEventListener("mouseover", (e) => {
+            if (element.style.backgroundColor != '') {
+                element.style.opacity = (+element.style.opacity) + 0.05;
+            } else {
+                element.style.opacity = 0.5;
+            };
             element.style.backgroundColor = "red";
         })
     }
