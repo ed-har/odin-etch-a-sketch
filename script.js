@@ -8,16 +8,15 @@ function drawGrid(squareNum) {
             let column = document.createElement("div");
             column.classList.add(`column`);
             row.appendChild(column);
-        }
+        };
         gridContainer.appendChild(row);
-    }
-}
+    };
+};
 
 function setDimension(squareNum, grid) {
     const canvas = document.querySelector("#grid-container");
     const canvasWidth = window.getComputedStyle(canvas).width.slice(0, -2);
     const newDimension = Math.floor(canvasWidth / squareNum);
-
     for (const element of grid) {
         element.style.width = `${newDimension}px`;
         element.style.height = `${newDimension}px`;
@@ -28,19 +27,32 @@ function addColorOnHover(grid) {
     for (const element of grid) {
         element.addEventListener("mouseover", (e) => {
             if (element.style.backgroundColor != '') {
-                element.style.opacity = (+element.style.opacity) + 0.05;
+                if (element.style.opacity < 1) {
+                    element.style.opacity = (+element.style.opacity) + 0.05;
+                };
             } else {
                 element.style.opacity = 0.5;
             };
-            element.style.backgroundColor = "red";
+            if (element.style.opacity <= 1) element.style.backgroundColor = `${colorRandomizer()}`;
         })
     }
 }
 
+function colorRandomizer() {
+    let result = '';
+    const hexValue = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+    for (let i = 0; i < 6; i++) {
+        const randomIndex = Math.floor(Math.random() * hexValue.length);
+        const randomValue = hexValue[randomIndex];
+        result += randomValue;
+    }
+    return '#' + result;
+}
+
 function gridInit(squareNum = '16') {
     drawGrid(squareNum);
-    const grid = [...document.querySelectorAll("#grid-container > .row > .column")]
-    setDimension(squareNum, grid)
+    const grid = [...document.querySelectorAll("#grid-container > .row > .column")];
+    setDimension(squareNum, grid);
     addColorOnHover(grid);
 }
 
